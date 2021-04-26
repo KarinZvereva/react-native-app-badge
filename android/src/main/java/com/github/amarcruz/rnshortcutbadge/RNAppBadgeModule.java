@@ -1,6 +1,8 @@
 package com.github.amarcruz.rnshortcutbadge;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -101,13 +103,6 @@ public class RNAppBadgeModule extends ReactContextBaseJavaModule {
             }
             boolean ok;
 
-            // Support Android 8.0+
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                 setupNotificationChannel();
-
-                 builder.setChannelId(NOTIFICATION_CHANNEL);
-            }
-
             if (mIsXiaomi) {
                 ok = setXiaomiBadge(context, count);
             } else {
@@ -154,6 +149,15 @@ public class RNAppBadgeModule extends ReactContextBaseJavaModule {
                 .setContentTitle("")
                 .setContentText("")
                 .setSmallIcon(R.drawable.ic_launcher);
+
+        // Support Android 8.0+
+        // TODO вынести
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setupNotificationChannel();
+
+            builder.setChannelId(NOTIFICATION_CHANNEL);
+        }
+
         Notification notification = builder.build();
         ShortcutBadger.applyNotification(context, notification, count);
         mNotificationManager.notify(mNotificationId, notification);
