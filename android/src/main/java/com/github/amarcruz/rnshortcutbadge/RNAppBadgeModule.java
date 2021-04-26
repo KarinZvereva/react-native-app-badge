@@ -22,6 +22,8 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class RNAppBadgeModule extends ReactContextBaseJavaModule {
 
+    private static final String NOTIFICATION_CHANNEL = "DEFAULT_CHANNEL_ID";
+
     private static final String TAG = "RNAppBadge";
     private static final String BADGE_FILE = "BadgeCountFile";
     private static final String BADGE_KEY = "BadgeCount";
@@ -99,6 +101,13 @@ public class RNAppBadgeModule extends ReactContextBaseJavaModule {
             }
             boolean ok;
 
+            // Support Android 8.0+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                 setupNotificationChannel();
+
+                 builder.setChannelId(NOTIFICATION_CHANNEL);
+            }
+
             if (mIsXiaomi) {
                 ok = setXiaomiBadge(context, count);
             } else {
@@ -150,6 +159,15 @@ public class RNAppBadgeModule extends ReactContextBaseJavaModule {
         mNotificationManager.notify(mNotificationId, notification);
 
         return true;
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private void setupNotificationChannel() {
+       NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL, "Система Город",
+          NotificationManager.IMPORTANCE_DEFAULT);
+
+          mNotificationManager.createNotificationChannel(channel);
     }
 
     /**
