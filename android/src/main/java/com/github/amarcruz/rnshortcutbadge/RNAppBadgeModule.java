@@ -146,12 +146,9 @@ public class RNAppBadgeModule extends ReactContextBaseJavaModule {
         mNotificationId++;
 
         Notification.Builder builder = new Notification.Builder(context)
-                .setContentTitle("")
-                .setContentText("")
                 .setSmallIcon(R.drawable.ic_launcher);
 
         // Support Android 8.0+
-        // TODO вынести
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             setupNotificationChannel();
 
@@ -169,7 +166,7 @@ public class RNAppBadgeModule extends ReactContextBaseJavaModule {
     @TargetApi(Build.VERSION_CODES.O)
     private void setupNotificationChannel() {
        NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL, "Система Город",
-          NotificationManager.IMPORTANCE_DEFAULT);
+          NotificationManager.IMPORTANCE_MIN);
 
           mNotificationManager.createNotificationChannel(channel);
     }
