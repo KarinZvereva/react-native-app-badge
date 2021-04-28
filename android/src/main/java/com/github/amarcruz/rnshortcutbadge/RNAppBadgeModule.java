@@ -146,6 +146,7 @@ public class RNAppBadgeModule extends ReactContextBaseJavaModule {
         mNotificationId++;
 
         Notification.Builder builder = new Notification.Builder(context)
+                .setContentText("У вас есть непрочитанные уведомления или сообщения.")
                 .setSmallIcon(R.drawable.ic_launcher);
 
         // Support Android 8.0+
